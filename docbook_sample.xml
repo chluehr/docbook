@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book lang="de">
+  <bookinfo>
+    <title>My Document Title</title>
+
+    <author>
+      <firstname>Christoph</firstname>
+
+      <surname>Lühr</surname>
+
+      <affiliation>
+        <orgname>r-Pentomino</orgname>
+      </affiliation>
+    </author>
+
+    <pubdate>26.04.2010</pubdate>
+  </bookinfo>
+
+  <chapter>
+    <title>How to write DocBook documentation</title>
+
+    <section>
+      <title>Organize your thoughts</title>
+
+      <para>Lorem Ipsum doloret ... Lorem Ipsum doloret ... Lorem
+      <acronym>Ipsum</acronym> doloret ... Lorem Ipsum doloret ... Lorem Ipsum
+      doloret ... Lorem Ipsum doloret ... Lorem Ipsum doloret ...</para>
+
+      <para>new paragraph Lorem Ipsum doloret ... Lorem Ipsum doloret ...
+      Lorem Ipsum doloret ... Lorem Ipsum doloret ... Lorem Ipsum doloret ...
+      Lorem Ipsum doloret ... Lorem Ipsum doloret ... Lorem Ipsum doloret
+      ...</para>
+
+      <section>
+        <title>this is a subsection</title>
+
+        <para>sdfsdfsd</para>
+
+        <para>sdfsdfsdfsdf</para>
+
+        <section>
+          <title>and a sub sub section ...</title>
+
+          <para><table>
+              <title>Sample Table Title</title>
+
+              <tgroup cols="2">
+                <tbody>
+                  <row>
+                    <entry>row 1 cell 1</entry>
+
+                    <entry>row 1 cell 2</entry>
+                  </row>
+
+                  <row>
+                    <entry>row 2 cell 1</entry>
+
+                    <entry>row 2 cell 2</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
+        </section>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Do your work</title>
+
+    <section>
+      <title>Foobar Section</title>
+
+      <figure>
+        <title>Title of a Screenshot</title>
+
+        <screenshot>
+          <screeninfo>Infotext Lorem Ipsum ..Lorem Ipsum ..Lorem Ipsum ..Lorem
+          Ipsum ..</screeninfo>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="image_sample.png" />
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </figure>
+    </section>
+  </chapter>
+</book>
