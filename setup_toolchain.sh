@@ -8,6 +8,7 @@ sudo apt-get install		\
 	xsltproc		\
 	docbook-xsl		\
 	fop			\
-	docbook-xsl-doc-pdf
+	docbook-xsl-doc-pdf	\
+	pandoc
 
 # eof
