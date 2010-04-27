@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="1.0"
+VERSION="1.1"
 
 # Stylesheets:
 
@@ -46,7 +46,7 @@ while getopts ":hvt:o:i:" opt; do
 	echo "   -v             display version"
 	echo "   -o FILENAME    specify output file name [optional]"
 	echo "   -t TYPE        specify target format type"
-	echo "   -i FILENAME    specify input file name [mandatory]"
+	echo "   -f FILENAME    specify input file name [mandatory]"
 	echo "   Allowed TYPEs for output: docbook, html, htmlmulti, pdf"
 	echo "   Allowed input file types: docbook (.xml), Markdown (.md)"
 	exit 0
@@ -58,7 +58,7 @@ while getopts ":hvt:o:i:" opt; do
     t)
 	OUTPUT_TYPE=$OPTARG
       ;;
-    i)
+    f)
 	INPUT_FILE=$OPTARG
       ;;
     o)
@@ -104,7 +104,7 @@ esac
 
 if test "$INPUT_FILE" = ""
 then
-        echo "Error: No input file specified (-i)"
+        echo "Error: No input file specified (-f)"
         exit 1
 fi
 

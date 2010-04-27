@@ -1,21 +1,21 @@
-Docbook Stuff
-=============
+Docbook helper
+==============
 
-What is this stuff?
--------------------
+Summary
+-------
 
-* Setup script for ubuntu (toolchain installation)
-* XSL modification for (german) documents
+* Install script for ubuntu (toolchain installation)
+* XSL modification for documents, minor .fo changes (margins, etc)
 * DocBook XML samples
 * Markdown (pandoc) samples
-* Convert script for building HTML and PDF output from
+* Convert script "x2doc" for building HTML and PDF output from
   Markdown and/or DocBook sources
 
 Good to know
 ------------
 
 * In order to get good images in the pdf output, specify 
-  image sizes via Gimp: "Image" => "Print Size"
+  image sizes, e.g. via Gimp: "Image" => "Print Size"
 * More Markdown (pandoc) samples are at 
   http://johnmacfarlane.net/pandoc/
   (Markdown to DocBook conversion)
@@ -39,24 +39,27 @@ Samples, usage
 
 Convert a Markdown (pandoc) document to DocBook XML:
 
-> x2doc -t docbook markdown-sample.md
+> x2doc -f markdown-sample.md
 
 Convert a Markdown (pandoc) document to PDF:
 
-> x2doc -t pdf -i markdown-sample.md
+> x2doc -t pdf -f markdown-sample.md
 
 Convert a Markdown (pandoc) document to HTML (one page):
 
-> x2doc -t html -i markdown-sample.md
+> x2doc -t html -f markdown-sample.md
 
 Convert a Markdown (pandoc) document to HTML (multiple pages):
 
-> x2doc -t htmlmulti -i markdown-sample.md
+> x2doc -t htmlmulti -f markdown-sample.md
+
+Convert a DocBook XML document to PDF, specifying a new output file:
+
+> x2doc -t pdf -o newdoc.pdf -f docbook-sample.xml
 
 Convert a DocBook XML document to TYPE):
 
-> x2doc -t TYPE -i docbook-sample.xml
-
+> x2doc -t TYPE -f docbook-sample.xml
 
 Valid TYPEs are:
 
@@ -64,5 +67,9 @@ Valid TYPEs are:
 * html
 * htmlmulti
 * docbook (not available for DocBook input files .. obviously)
+
+Use the "-h" option for additional usage instructions:
+
+> x2doc -h
 
 
