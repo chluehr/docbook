@@ -19,7 +19,10 @@ BASE=`basename $1 .xml`
 TMPFO=$BASE.$$.fo
 
 # Stylesheets:
-XSL_XHTML=/usr/share/xml/docbook/stylesheet/nwalsh/xhtml/docbook.xsl
+# html, one piece:
+#XSL_XHTML=/usr/share/xml/docbook/stylesheet/nwalsh/xhtml/docbook.xsl
+# html, multiple files (chapters, index ...):
+XSL_XHTML=/usr/share/xml/docbook/stylesheet/nwalsh/xhtml/chunk.xsl
 # Original XSL:
 #XSL_FO=/usr/share/xml/docbook/stylesheet/nwalsh/fo/docbook.xsl
 XSL_FO=custom-docbook-fo.xsl
