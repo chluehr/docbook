@@ -82,7 +82,7 @@
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="image_sample.png" />
+              <imagedata fileref="image-sample.png" />
             </imageobject>
           </mediaobject>
         </screenshot>

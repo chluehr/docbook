@@ -1,0 +1,191 @@
+#!/bin/bash
+
+VERSION="1.0"
+
+# Stylesheets:
+
+XSL_XHTML_SINGLE=/usr/share/xml/docbook/stylesheet/nwalsh/xhtml/docbook.xsl
+XSL_XHTML_MULTI=/usr/share/xml/docbook/stylesheet/nwalsh/xhtml/chunk.xsl
+XSL_FO_ORIGINAL=/usr/share/xml/docbook/stylesheet/nwalsh/fo/docbook.xsl
+XSL_FO_CUSTOM=/usr/local/share/xml/docbook/custom-docbook-fo.xsl
+
+# Commands:
+
+CMD_X2DOC=$0
+CMD_XSLTPROC=`which xsltproc`
+CMD_FOP=`which fop`
+CMD_PANDOC=`which pandoc`
+
+# Check command availability:
+
+if test -z "$CMD_XSLTPROC"
+then
+	echo "Error: Unable to find xsltproc command. Did you run install.sh?"
+	exit 1
+fi
+
+if test -z "$CMD_FOP"
+then
+	echo "Error: Unable to find fop command. Did you run install.sh?"
+	exit 1
+fi
+
+if test -z "$CMD_PANDOC"
+then
+	echo "Error: Unable to find pandoc command. Did you run install.sh?"
+	exit 1
+fi
+
+# Parse command line options:
+
+while getopts ":hvt:o:i:" opt; do
+  case $opt in
+    h)
+	echo "Usage: x2doc OPTIONS"
+	echo "   -h             help / usage"
+	echo "   -v             display version"
+	echo "   -o FILENAME    specify output file name [optional]"
+	echo "   -t TYPE        specify target format type"
+	echo "   -i FILENAME    specify input file name [mandatory]"
+	echo "   Allowed TYPEs for output: docbook, html, htmlmulti, pdf"
+	echo "   Allowed input file types: docbook (.xml), Markdown (.md)"
+	exit 0
+      ;;
+    v)
+      echo "x2doc $VERSION" >&2
+	exit 0
+      ;;
+    t)
+	OUTPUT_TYPE=$OPTARG
+      ;;
+    i)
+	INPUT_FILE=$OPTARG
+      ;;
+    o)
+	OUTPUT_FILE=$OPTARG
+      ;;
+    \?)
+      echo "Error: Invalid option: -$OPTARG" >&2
+      exit 1
+      ;;
+    :)
+      echo "Error: Option -$OPTARG requires an argument." >&2
+      exit 1
+      ;;
+  esac
+done
+
+# parse output type
+
+case $OUTPUT_TYPE in
+	pdf)
+		OUTPUT_TYPE='pdf'
+		OUTPUT_SUFFIX='pdf'
+		;;
+	html)
+		OUTPUT_TYPE='html'
+		OUTPUT_SUFFIX='html'
+		;;
+	htmlmulti)
+		OUTPUT_TYPE='htmlmulti'
+		OUTPUT_SUFFIX='html'
+		;;
+	'')
+		OUTPUT_TYPE='docbook'
+		OUTPUT_SUFFIX='xml'
+		;;
+	*)
+		echo "Error: Unsupported type [$OUTPUT_TYPE]"
+		exit 1
+		;;
+esac
+
+# check input file
+
+if test "$INPUT_FILE" = ""
+then
+        echo "Error: No input file specified (-i)"
+        exit 1
+fi
+
+if test \! -r "$INPUT_FILE"
+then
+        echo "Error: Can not open input file [$INPUT_FILE]"
+        exit 1
+fi
+
+# parse input type
+
+INPUT_SUFFIX=`echo "$INPUT_FILE"  | sed 's/.*\.//'`
+
+case $INPUT_SUFFIX in
+	xml)
+		INPUT_TYPE='docbook'
+		;;
+	md)
+		INPUT_TYPE='markdown'
+		;;
+	*)
+		echo "Error: Unsupported input type [$INPUT_SUFFIX]"
+		exit 1
+		;;
+esac
+
+# generate a output file, if none explicitly specified
+
+if test -z "$OUTPUT_FILE"
+then
+	OUTPUT_FILE=`basename $INPUT_FILE .$INPUT_SUFFIX`.$OUTPUT_SUFFIX
+fi
+
+if test "$INPUT_TYPE" = "$OUTPUT_TYPE"
+then
+	echo "Error: The output type is the same as the input type!"
+	exit 1
+fi
+
+CONVERSION=${INPUT_TYPE}2${OUTPUT_TYPE}
+
+# special case - markdown gets an extra treatment
+
+if test ${INPUT_TYPE} = "markdown"
+then
+	CONVERSION=markdown2x
+	if test "${OUTPUT_TYPE}" = "docbook"
+	then
+		CONVERSION=markdown2docbook
+	fi
+fi
+
+case $CONVERSION in
+	markdown2docbook)
+		$CMD_PANDOC -s -t docbook -o $OUTPUT_FILE $INPUT_FILE 
+		;;
+	markdown2x)
+		TMP_DOCBOOK="/tmp/x2doc.$$.xml"
+		$CMD_PANDOC -s -t docbook -o $TMP_DOCBOOK $INPUT_FILE 
+		$CMD_X2DOC -t $OUTPUT_TYPE -o $OUTPUT_FILE -i $TMP_DOCBOOK >/dev/null
+		rm $TMP_DOCBOOK 2>&1 >/dev/null
+		exit
+		;;
+	docbook2pdf)
+		TMP_FO="/tmp/x2doc.$$.fo"
+		xsltproc -o $TMP_FO $XSL_FO_CUSTOM $INPUT_FILE 2>&1 >/dev/null	&&
+		fop -pdf $OUTPUT_FILE -fo $TMP_FO 2>&1 >/dev/null		||
+		echo "Error: Conversion failed."
+		rm $TMP_FO 2>&1 >/dev/null
+		;;
+	docbook2html)
+		$CMD_XSLTPROC -o $OUTPUT_FILE $XSL_XHTML_SINGLE $INPUT_FILE
+		;;
+	docbook2htmlmulti)
+		$CMD_XSLTPROC -o $OUTPUT_FILE $XSL_XHTML_MULTI $INPUT_FILE
+		;;
+	*)
+		echo "Error: Unsupported conversion type [$CONVERSION]"
+		exit 1
+		;;
+esac
+exit
+
+# eof

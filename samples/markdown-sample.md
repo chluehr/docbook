@@ -226,5 +226,5 @@ multiple lines.
   [Michel Fortin]:		http://www.michelf.com/projects/php-markdown/
   [html2text]:          http://www.aaronsw.com/2002/html2text/
  
-  [tfmenu]: image_sample.png
+  [tfmenu]: image-sample.png
 

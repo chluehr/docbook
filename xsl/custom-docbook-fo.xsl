@@ -14,6 +14,8 @@
 <!-- Prefix sections number w/ chapter number -->
 <xsl:param name="section.label.includes.component.label" select="1"/>
 
+<xsl:param name="graphicsize.extension" select="1"/>
+
 <!-- Set inner margin size -->
 <xsl:param name="page.margin.inner" select="'3cm'"/>
 <!-- Set outer margin size -->
