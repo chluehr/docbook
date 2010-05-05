@@ -38,7 +38,7 @@ fi
 
 # Parse command line options:
 
-while getopts ":hvt:o:i:" opt; do
+while getopts ":hvt:o:f:" opt; do
   case $opt in
     h)
 	echo "Usage: x2doc OPTIONS"
