@@ -73,3 +73,4 @@ Use the "-h" option for additional usage instructions:
 > x2doc -h
 
 
+EOF
